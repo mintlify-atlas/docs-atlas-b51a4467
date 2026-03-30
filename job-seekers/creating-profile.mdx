@@ -1,0 +1,101 @@
+---
+title: "Creating your profile"
+description: "How to set up and complete your Trabajonautas profile so you can start finding and applying to jobs across Bolivia."
+---
+
+Before you can apply to job announcements, you need to register and complete your profile. Trabajonautas uses a `register_completed` flag to track whether your profile is fully set up — only completed profiles get full access to the platform.
+
+## Registration
+
+You can create an account in two ways:
+
+<CardGroup cols={2}>
+  <Card title="Email & password" icon="envelope">
+    Register with your email address and choose a password. You will need to verify your email before accessing the platform.
+  </Card>
+  <Card title="Sign in with Google" icon="google">
+    Use your existing Google account for instant registration. Email verification is handled automatically.
+  </Card>
+</CardGroup>
+
+<Warning>
+  Your account must be verified and activated before you can browse announcements or apply to jobs. Check your inbox for a verification link immediately after registering.
+</Warning>
+
+## Completing your profile
+
+After registration you are taken through a **First Steps** setup flow where you fill in your professional details. You must complete all fields in this step — the form saves everything in a single transaction and marks your profile as `register_completed`.
+
+<Steps>
+  <Step title="Enter your contact details">
+    Provide your **phone number** (8 digits, Bolivia numbers only). The platform automatically stores it with the **+591** country code — you only need to enter the local number. For example, entering `71234567` stores `+591 71234567`.
+
+    <Tip>
+      Use an active WhatsApp number. Employers may use it to reach you directly.
+    </Tip>
+  </Step>
+
+  <Step title="Select your location">
+    Choose your **city or department** from the `location_id` dropdown. This is used to match you with announcements posted for your area and to surface relevant results on your dashboard.
+  </Step>
+
+  <Step title="Choose your profession">
+    Select your **profession** (`profesion_id`) from the list. Professions are grouped under broader **areas** (`area_id`), so choosing your profession also determines which area-level announcements you see.
+
+    <Note>
+      Each profession belongs to one area. Your selection directly affects which job suggestions appear on your dashboard and which announcements you are eligible to apply to.
+    </Note>
+  </Step>
+
+  <Step title="Set your academic grade profile">
+    Select your **grade profile** (`grade_profile_id`). This represents your highest level of education or academic qualification and is shown to employers when you apply.
+  </Step>
+
+  <Step title="Fill in personal details">
+    Complete the remaining required fields:
+
+    | Field | Options |
+    |-------|---------|
+    | `gender` | `M` (Male) or `F` (Female) |
+    | `age` | Age range group (`1`, `2`, or `3`) |
+  </Step>
+
+  <Step title="Choose an account type">
+    Select whether you want a **free** account or a **Pro/Pro Max** paid plan. Free accounts can browse and save announcements. Pro accounts unlock exclusive announcements marked with a **PRO** badge.
+
+    If you choose a paid plan, a subscription request is created and remains pending until your payment is verified.
+  </Step>
+
+  <Step title="Confirm and save">
+    Review your details and click **Confirm**. The platform saves your profile, sets `register_completed` to `true`, and redirects you to your dashboard at `/panel`. A welcome email is sent to your address.
+  </Step>
+</Steps>
+
+## Profile photo
+
+Your profile photo is managed through Laravel Jetstream's `HasProfilePhoto` integration. You can update it at any time from your account settings. A photo makes your profile more recognisable to employers.
+
+<Tip>
+  Profiles with a photo and fully filled-in details are significantly more likely to be noticed by employers. Complete every field — do not leave optional-looking fields blank.
+</Tip>
+
+## Account activation
+
+Beyond email verification, your account also has an `actived` flag. If your account is deactivated by an administrator, you will be redirected to `/inactivo`. Contact support if you believe your account was deactivated in error.
+
+## What gets unlocked after completion
+
+<CardGroup cols={2}>
+  <Card title="Dashboard" icon="gauge">
+    Access your personal panel at `/panel` to see new announcements matched to your profession and location.
+  </Card>
+  <Card title="Job search" icon="magnifying-glass">
+    Filter and browse all active announcements at `/busqueda` using profession and location filters.
+  </Card>
+  <Card title="Apply to jobs" icon="paper-plane">
+    Save and track job announcements. Your applications are linked to your profile via the `myAnnounces` relationship.
+  </Card>
+  <Card title="Pro announcements" icon="star">
+    If you subscribe to a Pro plan, you gain access to exclusive announcements not visible to free users.
+  </Card>
+</CardGroup>

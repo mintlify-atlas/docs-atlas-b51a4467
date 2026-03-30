@@ -1,0 +1,86 @@
+---
+title: "Account types and plans"
+description: "Understand the available account tiers on Trabajonautas and what each plan unlocks for job seekers and employers."
+---
+
+Trabajonautas offers different account tiers to match how you use the platform. Every user starts with access to the free plan, and you can upgrade to a paid plan at any time from the **Plans** page (`/pro`).
+
+## How account plans work
+
+Your account is tied to an **account type** that determines which features you can access. When you subscribe to a paid plan, your account gains a `limit_time` — an expiry timestamp calculated from the plan's `duration_days`. Once that date passes, your account reverts to free-tier access until you renew.
+
+<Note>
+  The **Plans** page always shows the most up-to-date list of available plans, including each plan's name, price, and duration in days.
+</Note>
+
+## Available plan tiers
+
+Trabajonautas offers plans for both **job seekers** (Trabajonautas) and **employers/recruiters**. The free plan is available to everyone with no payment required. Paid plans — such as **PRO** and **PRO MAX** — unlock expanded limits and visibility features for the duration of the subscription period.
+
+<CardGroup cols={3}>
+  <Card title="Free" icon="user">
+    The default tier for all new accounts. Browse job listings, apply to openings, and access your personal dashboard at no cost.
+  </Card>
+  <Card title="PRO" icon="star">
+    A paid upgrade that extends your reach and visibility on the platform. Access additional features for the full `duration_days` of the plan.
+  </Card>
+  <Card title="PRO MAX" icon="rocket">
+    The highest tier available, offering the most features and the longest active period. Ideal for power users and active recruiters.
+  </Card>
+</CardGroup>
+
+## Plan comparison
+
+| Feature | Free | PRO | PRO MAX |
+|---|---|---|---|
+| Browse job listings | Yes | Yes | Yes |
+| Apply to openings | Yes | Yes | Yes |
+| Access personal dashboard | Yes | Yes | Yes |
+| View PRO-flagged announcements | No | Yes | Yes |
+| Receive push notifications for new jobs | No | No | Yes |
+| Timed subscription access | No | Yes (fixed days) | Yes (fixed days) |
+
+<Tip>
+  Visit the **Plans** page to see the exact price (in bolivianos) and duration in days for each paid plan before purchasing.
+</Tip>
+
+## Plan duration and expiry
+
+Each paid plan has a `duration_days` value that defines how many days your upgraded access lasts. When your payment is verified, the system sets your account's `limit_time` to the current date plus that number of days.
+
+For example, if a PRO plan has a `duration_days` of 30, your access expires 30 days after your payment is confirmed by the Trabajonautas team.
+
+Once your `limit_time` is reached:
+
+- Your account type resets to the free tier automatically.
+- Your profile and history remain intact — you do not lose any data.
+- You can renew or upgrade at any time by returning to the **Plans** page.
+
+<Warning>
+  Paid features become unavailable as soon as your `limit_time` expires. Renew before the expiry date to maintain uninterrupted access.
+</Warning>
+
+## Push notifications and your account
+
+Push notifications for new job announcements are only delivered to **PRO MAX** (`account_type_id = 3`) subscribers. Your account can store a `device_token` that enables push notifications on your mobile device. This token is linked directly to your account and is saved automatically when you use the platform on a supported mobile device. No manual setup is required on your part.
+
+<Note>
+  PRO subscribers can view PRO-flagged announcements but do not receive push notifications — that feature is exclusive to PRO MAX.
+</Note>
+
+## Viewing and upgrading your plan
+
+<Steps>
+  <Step title="Go to the plans page">
+    Navigate to the **Plans** page to see all available account types with their name, price, and duration.
+  </Step>
+  <Step title="Select a plan">
+    Choose the plan that fits your needs and click the purchase button to proceed to the checkout page.
+  </Step>
+  <Step title="Complete the purchase flow">
+    Confirm your location, profession, and payment details. Your subscription request is submitted to the Trabajonautas team for verification.
+  </Step>
+  <Step title="Wait for payment verification">
+    The Trabajonautas team manually reviews and confirms your payment. Once verified, your `limit_time` is activated and your account upgrades immediately.
+  </Step>
+</Steps>

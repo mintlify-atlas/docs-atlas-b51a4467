@@ -1,0 +1,67 @@
+---
+title: "Reports and analytics"
+description: "How administrators generate subscription revenue reports, filter by date range, and export client data to Excel."
+---
+
+The reports page at `/admin/reportes` is accessible to **ADMIN only**. It gives you a real-time view of verified subscription payments and total revenue for any date range, plus the ability to export the data as an Excel file.
+
+## What the report shows
+
+The report queries the `subscriptions` table for records where:
+
+- `verified_payment = true` — only payments that have been confirmed by an administrator
+- `account_type_id` is `2` or `3` — only paid plans (free/trial accounts are excluded)
+- `updated_at` falls within the selected `start_date` / `end_date` range
+
+Below the subscription list, a **total revenue** figure shows the sum of all `price` values for the filtered records.
+
+<Note>
+  The date range is preserved in the browser URL via query parameters (`start_date` and `end_date` with history persistence). You can bookmark or share a URL to return to the same report view later.
+</Note>
+
+## Generating a report
+
+<Steps>
+  <Step title="Navigate to the reports page">
+    Go to `/admin/reportes`. The report defaults to today's date for both `start_date` and `end_date`, showing only today's verified payments.
+  </Step>
+  <Step title="Set the date range">
+    Enter a `start_date` and `end_date` using the date pickers. Click **Search** (or the equivalent filter button) to call `searchData($start, $end)` and refresh the results.
+  </Step>
+  <Step title="Review the subscription list">
+    The table shows all verified paid subscriptions within your selected range, ordered by most recently updated. Check the total revenue figure at the bottom.
+  </Step>
+  <Step title="Export to Excel">
+    Click the **Export** button. This triggers `exportData()`, which generates and downloads a file named `Clientes-{dd-mm-yyyy}.xlsx` where the date is today's date.
+  </Step>
+</Steps>
+
+<Tip>
+  To generate a monthly revenue report, set `start_date` to the first day of the month and `end_date` to the last day. The URL will update automatically, so you can bookmark the filtered view.
+</Tip>
+
+## Excel export columns
+
+The downloaded `.xlsx` file contains one row per verified subscription. The export uses the `created_at` timestamp on the subscription record (not `updated_at`) for date filtering, so the file may occasionally differ slightly from the on-screen table which uses `updated_at`.
+
+| Column header | Field | Description |
+|---|---|---|
+| ID cliente | `user_id` | The client's user ID |
+| Nombre | `user.name` | Full name of the client |
+| Tipo de cuenta | `type.name` | Subscription plan name (e.g. "Pro", "Pro Max") |
+| Verificado por | `verifiedBy.name` | Name of the admin who verified the payment, or "Sistema" if verified automatically |
+| Fecha de verificación | `created_at` | Date and time the subscription was created, formatted as `dd-mm-yyyy HH:mm` |
+| Celular | `user.phone` | Client's phone number |
+| Ganancia (Bs.) | `price` | Amount paid in Bolivianos |
+
+<Note>
+  If a client account has been soft-deleted since their subscription was recorded, their data still appears in the export. The query uses `withTrashed()` on the user relation so historical records are never lost from the report.
+</Note>
+
+## Revenue total
+
+The total revenue displayed on-screen is calculated as `SUM(price)` from the same filtered query. It reflects the sum of the `price` field across all verified paid subscriptions in the selected date range.
+
+<Warning>
+  The on-screen total and the Excel export use slightly different date filters. The on-screen table filters by `updated_at`, while the export filters by `created_at`. For auditing purposes, treat the Excel file as the authoritative record and cross-reference with your payment confirmation logs if there are discrepancies.
+</Warning>

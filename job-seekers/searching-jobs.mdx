@@ -1,0 +1,99 @@
+---
+title: "Searching for jobs"
+description: "How to find and filter job announcements on Trabajonautas using the homepage feed, the search page, and available filters."
+---
+
+Trabajonautas gives you several ways to discover job announcements. Every announcement has an `expiration_time` — once that date passes, the announcement is automatically removed from all results and is no longer accessible.
+
+## Ways to find jobs
+
+<Tabs>
+  <Tab title="Homepage feed">
+    The homepage at `/` shows a curated selection of recent, active announcements. This is a good starting point to see what is currently available across Bolivia without applying any filters.
+
+    From the homepage you can click **Iniciar búsqueda** to go directly to the full search page.
+  </Tab>
+  <Tab title="Search page">
+    The main search experience lives at `/busqueda`. You can navigate there directly or pass a job title as part of the URL:
+
+    ```
+    /busqueda
+    /busqueda/enfermera
+    /busqueda/ingeniero
+    ```
+
+    The optional `{title}` segment pre-fills a keyword so you can share or bookmark specific searches.
+
+    Results are paginated at **12 announcements per page**, ordered by most recently updated.
+  </Tab>
+  <Tab title="Dashboard suggestions">
+    Once your profile is complete, your dashboard at `/panel` shows announcements matched to your `profesion_id` and `location_id`. These are tailored to your profile so you do not have to search manually.
+
+    A notification badge appears when new announcements have been posted since your last visit (`last_announce_check`).
+  </Tab>
+</Tabs>
+
+## Filtering results
+
+On the `/busqueda` page you can narrow results using two filters:
+
+<CardGroup cols={2}>
+  <Card title="Filter by profession" icon="briefcase">
+    Select a profession (`profesion_id`) from the dropdown. Only announcements that list that profession as a requirement are shown.
+
+    When you filter by profession, a **Recommendations** section also appears below the main results, showing up to 6 related announcements from the same broad area — useful for discovering adjacent roles.
+  </Card>
+  <Card title="Filter by location" icon="location-dot">
+    Select a city or department (`location_id`) to see only announcements posted for that area. Announcements can target multiple locations, so you may appear in results for several cities.
+  </Card>
+</CardGroup>
+
+<Note>
+  You can combine both filters at the same time. Results update immediately without a page reload.
+</Note>
+
+## Understanding an announcement listing
+
+Each announcement card in search results shows:
+
+| Field | What it means |
+|-------|--------------|
+| `announce_title` | The job title or role being advertised |
+| Company name & logo | The organisation posting the vacancy |
+| `locations` | The city or cities where the role is based |
+| `expiration_time` | The closing date — after this date the announcement disappears |
+| **PRO badge** | The `pro` flag marks exclusive announcements only visible to Pro subscribers |
+
+<Warning>
+  Announcements with a **PRO** badge require an active Pro or Pro Max subscription to view in full. If you try to open a Pro announcement without a valid subscription, you will be redirected to `/panel`.
+</Warning>
+
+## Pro announcements
+
+Some announcements are marked `pro = true` by the employer. These are not shown in search results for free users and are restricted to subscribers whose `profesion_id` matches one of the professions listed on the announcement. If your profession is not on the list, you will see a restricted-area page.
+
+<Tip>
+  Upgrading to a Pro plan gives you access to a separate pool of exclusive announcements that free users never see. Visit `/pro` to compare plan options.
+</Tip>
+
+## Announcement expiration
+
+Every announcement includes an `expiration_time` date set by the employer. The platform automatically excludes expired announcements from all queries — they will not appear in search results, recommendation sections, or your dashboard. If you bookmarked a direct link to an announcement that has since expired, the page will redirect you to the homepage.
+
+<AccordionGroup>
+  <Accordion title="Why are there no results for my search?">
+    There are a few common reasons:
+
+    - No active announcements currently match your selected profession or location
+    - All matching announcements have passed their `expiration_time`
+    - You are searching for a very specific profession that has no current postings
+
+    Try removing one of the filters or browse the homepage feed to see all currently active announcements.
+  </Accordion>
+  <Accordion title="What does the Recommendations section show?">
+    When you filter by a specific profession, the search page shows up to 6 additional announcements from the same **area** as your chosen profession. These are not exact matches but are related roles within the same professional field — useful for finding opportunities you might not have thought to search for directly.
+  </Accordion>
+  <Accordion title="Can I search without an account?">
+    Yes. The search page at `/busqueda` is publicly accessible. You can browse and filter announcements without logging in. However, you must be registered and have a complete profile to apply or save an announcement.
+  </Accordion>
+</AccordionGroup>

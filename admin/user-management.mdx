@@ -1,0 +1,150 @@
+---
+title: "Managing users"
+description: "How administrators manage user accounts, roles, and client profiles — including activation, soft-deletion, and subscription verification."
+---
+
+Trabajonautas has three distinct roles. Understanding them is essential before managing any account.
+
+<CardGroup cols={3}>
+  <Card title="CLIENT" icon="user">
+    Job seekers. They browse announcements, choose a subscription plan, and receive push notifications when new listings match their profession and location.
+  </Card>
+  <Card title="USER" icon="building">
+    Employers. They post job announcements, manage companies, and view their own analytics on the dashboard.
+  </Card>
+  <Card title="ADMIN" icon="shield">
+    Platform administrators. Full access to all sections, including user management, areas, reports, and notices.
+  </Card>
+</CardGroup>
+
+<Tabs>
+  <Tab title="Users (Employers)">
+
+## User list — `/admin/usuario`
+
+The user list at `/admin/usuario` is accessible to **ADMIN only**. It shows all accounts that hold the USER or ADMIN role.
+
+Each row displays the user's name and account details. Use the **Edit** action on any row to open that user's configuration page.
+
+<Note>
+  This list does not show CLIENT (job seeker) accounts. To manage job seekers, use the **Clients** tab.
+</Note>
+
+### Creating a new user
+
+<Steps>
+  <Step title="Go to the user list">
+    Navigate to `/admin/usuario`. You will see all existing USER and ADMIN accounts.
+  </Step>
+  <Step title="Open the creation form">
+    Click the **New user** button (or navigate directly to `/admin/config-usuario` without an ID parameter). The `ConfigUser` form opens in creation mode.
+  </Step>
+  <Step title="Fill in the user details">
+    Enter the required fields: name, email, password, and role assignment. The available roles are USER and ADMIN.
+  </Step>
+  <Step title="Save">
+    Click **Save**. The record is created and you are redirected back to the user list (`/admin/usuario`).
+  </Step>
+</Steps>
+
+### Editing an existing user
+
+Navigate to `/admin/config-usuario/{id}` (or click **Edit** in the user list). The form pre-populates with the user's current data via `user->editUser($id)`. Make your changes and click **Update** — this calls `updateUser($id)` and redirects you back to the user list.
+
+<Tip>
+  If you need to promote an employer to an administrator, change their role assignment here. Be careful — ADMIN accounts have unrestricted platform access.
+</Tip>
+
+  </Tab>
+  <Tab title="Clients (Job Seekers)">
+
+## Client list — `/admin/cliente`
+
+The client list at `/admin/cliente` is accessible to both **USER and ADMIN** roles. It shows all CLIENT accounts, with pagination of 10 records per page, sorted by most recently updated.
+
+### Filtering clients
+
+Use the `filter_client` URL parameter (reflected in the browser URL bar) to narrow down the list:
+
+| Filter value | What it shows |
+|---|---|
+| *(empty)* | All completed registrations, not deleted |
+| `unaccount` | Accounts where `register_completed = false` (setup not finished) |
+| `pending` | Clients with a pending (unverified) subscription |
+| `active` | Clients where `actived = true` |
+| `inactive` | Clients where `actived = false` |
+| `deleted` | Soft-deleted accounts only |
+| `2` or `3` | Clients on a specific `account_type_id` (paid plans) |
+
+You can also search by name using the search field — this filters by `name LIKE %search%` and resets to page 1 automatically.
+
+<Note>
+  The client list uses `withTrashed()` under the hood, so soft-deleted accounts are accessible when you apply the `deleted` filter. They do not appear in the default view.
+</Note>
+
+### Configuring a client — `/admin/config-cliente/{id}`
+
+Click any client row to open their profile at `/admin/config-cliente/{id}`. This page loads via the `load-client` Livewire event and shows:
+
+- **Identity**: name, email, phone, location, profession
+- **Current account**: active `account_type_id`, subscription `limit_time`, and `device_token` for push notifications
+- **Latest pending subscription**: the most recent subscription waiting for payment verification, including the plan name (`type.name`), price, and duration
+
+#### Verifying a payment
+
+<Steps>
+  <Step title="Open the client profile">
+    Navigate to `/admin/config-cliente/{id}`.
+  </Step>
+  <Step title="Review the pending subscription">
+    Check the pending subscription details: plan name, price, and duration in days.
+  </Step>
+  <Step title="Set verified_payment">
+    Toggle the **Verified payment** field to `true` once you have confirmed the client's payment.
+  </Step>
+  <Step title="Set account status">
+    Ensure **Client actived** (`client_actived`) is set to `true` to allow the client to use the platform.
+  </Step>
+  <Step title="Save">
+    Click **Save**. The system runs a database transaction that:
+    - Updates or creates the client's account record (`account_type_id` + `limit_time` calculated from `duration_days`)
+    - Marks the subscription as `verified_payment = true` and records `verified_by_user_id`
+    - Sends a **Renew Account** email to the client
+    - Updates `actived` on the user record
+  </Step>
+</Steps>
+
+<Warning>
+  If the transaction fails for any reason, a `client-error` event is dispatched and no changes are committed. Check the application logs for details. No email is sent on failure.
+</Warning>
+
+### Activating and deactivating a client
+
+The `actived` field controls whether a CLIENT can log in and use the platform. Set it to `false` on the config page and save to immediately block access. The client will be redirected to `/inactivo` on their next request.
+
+### Soft-delete behaviour
+
+Deleting a client performs a **soft delete** — the record is not permanently removed. The `deleted_at` timestamp is set, and the account disappears from the default list view. To see soft-deleted clients, apply the `deleted` filter. Soft-deleted clients cannot log in.
+
+  </Tab>
+</Tabs>
+
+## Account status reference
+
+<AccordionGroup>
+  <Accordion title="register_completed">
+    Set to `true` once a CLIENT finishes the **First Steps** setup (phone, location, profession, and subscription plan). Clients with `register_completed = false` are shown the First Steps guide on login instead of the main dashboard.
+  </Accordion>
+  <Accordion title="actived">
+    Boolean flag on the user record. When `false`, the user is blocked from accessing the platform regardless of role. Toggle this on the config pages for both USER and CLIENT accounts.
+  </Accordion>
+  <Accordion title="deleted_at">
+    Soft-delete timestamp. A non-null value means the account has been deleted but is still in the database. Only visible in the client list when the `deleted` filter is active.
+  </Accordion>
+  <Accordion title="limit_time (account expiry)">
+    Stored on the `account` relation. Calculated as `now() + duration_days` at the moment a subscription is verified. When this date passes, the client's PRO features expire and they need to renew.
+  </Accordion>
+  <Accordion title="device_token">
+    Firebase device token stored on the client's account record. Used to send push notifications. Clients register their token automatically after logging in on a mobile device.
+  </Accordion>
+</AccordionGroup>

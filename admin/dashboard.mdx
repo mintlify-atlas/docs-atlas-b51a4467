@@ -1,0 +1,104 @@
+---
+title: "Admin dashboard"
+description: "Overview of the Trabajonautas admin panel and its key sections, including analytics, notifications, and the first-steps setup guide."
+---
+
+The admin panel lives at `/panel` and is the central hub for managing the Trabajonautas platform. What you see after logging in depends on your role — administrators get a platform-wide view, employers (USER) see their own activity, and job seekers (CLIENT) see their job-search dashboard.
+
+## Dashboard sections
+
+<CardGroup cols={2}>
+  <Card title="Analytics charts" icon="chart-line" href="/admin/reports">
+    Date-range charts showing platform activity. Administrators and employers see analytics for their account activity.
+  </Card>
+  <Card title="Job listing cards" icon="briefcase">
+    For CLIENT accounts: a live feed of active announcements matching the client's profession and location, ordered by relevance and recency.
+  </Card>
+  <Card title="Announcement notifications" icon="bell">
+    For CLIENT accounts: a panel showing up to 10 recent active announcements matching the client's registered location and profession — a quick-access list alongside the main card feed.
+  </Card>
+  <Card title="First Steps guide" icon="flag">
+    Shown to new CLIENT accounts that have not yet completed registration. Guides them through selecting a profession, location, and subscription plan.
+  </Card>
+</CardGroup>
+
+## Role-based dashboard differences
+
+<Tabs>
+  <Tab title="ADMIN">
+    Administrators see the full platform analytics dashboard (`DashboardUser`) with charts spanning all users and clients. The date-range picker defaults to the current month (`start_date` = first day of month, `end_date` = today) and you can adjust it to any custom range. Changing the range dispatches a `refresh-charts` event that re-renders all chart components in place.
+
+    Admins have the broadest view of platform analytics — covering all user and client activity across the entire platform.
+  </Tab>
+  <Tab title="USER (Employer)">
+    Employers see the same `DashboardUser` analytics layout but data is scoped to their own account activity — their announcements, views, and related stats. The date-range picker works identically, defaulting to the current month.
+  </Tab>
+  <Tab title="CLIENT (Job Seeker)">
+    Job seekers land on the `DashboardClient` view. Instead of charts, they see:
+
+    - A live card feed of active job announcements (`DashboardCard`) filtered by their `profesion_id`. Listings that also match their `location_id` are shown first (priority level 1); those that match only their profession are shown below (priority level 2). The feed shows 7 announcements at a time with a **Load more** button to fetch additional results.
+    - An announcement notification panel (`DashboardNotify`) showing up to 10 recent active announcements matching both their location and profession — a quick sidebar of relevant listings.
+    - A "new announcements" indicator that compares the current listing activity against their `last_announce_check` timestamp. Once you open the dashboard with new matches, the timestamp updates and the indicator resets.
+
+    If a CLIENT has not yet completed their profile (i.e. `register_completed` is false), the **First Steps** guide is shown instead, prompting them to fill in their phone number, location, profession, and choose a subscription plan.
+  </Tab>
+</Tabs>
+
+## Date range filtering
+
+The analytics charts respond to a date range picker that sets `start_date` and `end_date`. After you update the range, the component dispatches a `refresh-charts` event and all charts reload automatically. Dates are displayed in `dd/mm/yyyy` format in the panel header (e.g. "Desde el 01/03/2026 hasta el 30/03/2026").
+
+<Tip>
+  The date picker defaults to the start of the current month through today. To compare month-over-month performance, change `start_date` to the first day of the previous month and `end_date` to its last day.
+</Tip>
+
+## Announcement notification panel (CLIENT)
+
+The notification panel for CLIENT accounts (`DashboardNotify`) shows up to **10 recent active announcements** that match the client's registered location and profession. Results are ordered by most recently updated. This complements the main card feed and gives clients a quick-access list of relevant listings.
+
+<Note>
+  The announcement notification panel is only visible to CLIENT accounts. Administrators and employers (USER/ADMIN) see analytics charts instead.
+</Note>
+
+## First Steps guide for new clients
+
+When a new CLIENT account logs in for the first time and `register_completed` is false, the **FirstSteps** component takes over the dashboard. It walks the user through:
+
+<Steps>
+  <Step title="Enter phone number">
+    The client provides their Bolivian mobile number. The country code defaults to `+591`.
+  </Step>
+  <Step title="Select location">
+    Choose from the list of available locations in Bolivia (sourced from the `locations` table).
+  </Step>
+  <Step title="Select profession">
+    Choose a profession from the full list (sourced from the `profesions` table, sorted alphabetically). This determines which job announcements the client will see.
+  </Step>
+  <Step title="Choose a subscription plan">
+    Select an account type from the available plans (`account_types` table), each showing its name, price, and duration in days.
+  </Step>
+  <Step title="Confirm and save">
+    Clicking **Confirm** saves all data, marks `register_completed` as true, and sends a **Welcome** email to the client. The client is then redirected to the main dashboard.
+  </Step>
+</Steps>
+
+<Warning>
+  If the save fails (e.g. due to a network or validation error), a `register-failed` event is dispatched and the client remains on the First Steps screen. No welcome email is sent until the form is successfully submitted.
+</Warning>
+
+## Admin panel navigation
+
+<CardGroup cols={2}>
+  <Card title="Managing users" icon="users" href="/admin/user-management">
+    Create and configure employer (USER) accounts and job-seeker (CLIENT) profiles, manage roles, and activate or deactivate accounts.
+  </Card>
+  <Card title="Areas and professions" icon="folder-tree" href="/admin/areas-and-professions">
+    Manage the top-level job categories (areas) and the profession classifications nested within them.
+  </Card>
+  <Card title="Reports and analytics" icon="file-chart-column" href="/admin/reports">
+    Generate subscription revenue reports filtered by date range and export them to Excel.
+  </Card>
+  <Card title="Notices" icon="newspaper" href="/admin/areas-and-professions">
+    Publish platform-wide announcements and news visible to all users on the platform.
+  </Card>
+</CardGroup>

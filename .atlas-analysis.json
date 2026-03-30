@@ -1,0 +1,86 @@
+{
+  "projectType": "saas",
+  "projectName": "Trabajonautas",
+  "projectDescription": "A job portal for Bolivian companies and professionals to post and discover employment opportunities.",
+  "theme": "almond",
+  "primaryColor": "#040404",
+  "lightColor": "#ef370f",
+  "darkColor": "#f79d72",
+  "navigation": {
+    "tabs": [
+      {
+        "tab": "Documentation",
+        "groups": [
+          {
+            "group": "Get Started",
+            "pages": [
+              "introduction",
+              "quickstart"
+            ]
+          },
+          {
+            "group": "For Job Seekers",
+            "pages": [
+              "job-seekers/creating-profile",
+              "job-seekers/searching-jobs",
+              "job-seekers/applying"
+            ]
+          },
+          {
+            "group": "For Employers",
+            "pages": [
+              "employers/company-setup",
+              "employers/posting-announcements",
+              "employers/managing-candidates"
+            ]
+          },
+          {
+            "group": "Account & Billing",
+            "pages": [
+              "account/account-types",
+              "account/subscriptions",
+              "account/authentication"
+            ]
+          },
+          {
+            "group": "Admin Guide",
+            "pages": [
+              "admin/dashboard",
+              "admin/user-management",
+              "admin/areas-and-professions",
+              "admin/reports"
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "keyFeatures": [
+    "Job announcement creation with expiration dates, salary info, and file attachments",
+    "Role-based access control (CLIENT, USER, ADMIN) via Spatie Permissions",
+    "Google OAuth and email/password authentication with email verification",
+    "Tiered subscription plans (account types) with manual payment verification",
+    "Push notifications via Firebase for new job announcements (PRO tier)",
+    "Profession and area-based job filtering and search",
+    "Admin reporting with Excel export of subscription/client data",
+    "Single-session enforcement and account activation controls"
+  ],
+  "publicApiSurface": [
+    "GET / — Public home page with recent announcements",
+    "GET /busqueda/{title?} — Job search by title",
+    "GET /convocatoria/{id} — Job announcement detail",
+    "GET /pro — Subscription plan listing",
+    "GET /preguntas — FAQ page",
+    "GET /admin/convocatoria — Manage announcements (USER/ADMIN)",
+    "GET /admin/nueva-convocatoria/{id?} — Create/edit announcement (USER/ADMIN)",
+    "GET /admin/empresa — Manage companies (USER/ADMIN)",
+    "GET /admin/profesiones — Manage professions (USER/ADMIN)",
+    "GET /admin/cliente — Manage clients (USER/ADMIN)",
+    "GET /admin/area — Manage areas (ADMIN only)",
+    "GET /admin/usuario — Manage users (ADMIN only)",
+    "GET /admin/reportes — Subscription reports with Excel export (ADMIN only)",
+    "GET /admin/noticias — Manage notices (ADMIN only)",
+    "GET auth/google — Google OAuth redirect",
+    "GET auth/google/callback — Google OAuth callback"
+  ]
+}

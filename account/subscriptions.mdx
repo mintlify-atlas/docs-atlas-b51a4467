@@ -1,0 +1,92 @@
+---
+title: "Managing your subscription"
+description: "How to subscribe to a paid plan and manage your billing on Trabajonautas."
+---
+
+A subscription records your purchase of a paid account plan. Every time you buy a PRO or PRO MAX plan, a new subscription entry is created and linked to your account. The Trabajonautas team reviews each payment manually before your upgrade takes effect.
+
+## Viewing available plans
+
+Head to the **Plans** page to browse all available account types. Each plan card shows:
+
+- The plan **name** (e.g. PRO, PRO MAX)
+- The **price** in bolivianos
+- The **duration** in days that the plan will remain active
+
+Your current plan and any pending subscription are also visible on this page so you always know where you stand.
+
+## Purchasing a plan
+
+<Steps>
+  <Step title="Browse plans">
+    Go to the **Plans** page and review the available account types. Compare prices and durations to find the right plan for you.
+  </Step>
+  <Step title="Select your plan">
+    Click the purchase button on the plan you want. You'll be taken to the checkout page for that specific plan.
+  </Step>
+  <Step title="Confirm your details">
+    On the purchase page, verify or update your **location** and **profession**. These fields are required to complete the purchase. Make sure they reflect your current situation.
+  </Step>
+  <Step title="Submit your subscription request">
+    Click **Confirm** to create your subscription. The system records the plan you selected, the price at time of purchase, and sets `verified_payment` to pending.
+  </Step>
+  <Step title="Make your payment">
+    Pay using the QR code displayed on the confirmation screen. There is a QR code for PRO and a separate one for PRO MAX. Transfer the exact amount shown for your plan.
+  </Step>
+  <Step title="Wait for manual verification">
+    The Trabajonautas team reviews your payment and marks it as verified. Once confirmed, your account's `limit_time` is set and your upgraded features activate.
+  </Step>
+</Steps>
+
+<Note>
+  Payment verification is done manually by the Trabajonautas team. Verification typically happens within one business day. You will receive a notification once your payment is confirmed.
+</Note>
+
+## Payment verification
+
+Each subscription has a `verified_payment` field that starts as `false` when you submit your purchase. The Trabajonautas team reviews your bank transfer or QR payment and manually marks it as verified.
+
+Until `verified_payment` is confirmed:
+
+- Your account remains on the free tier.
+- You cannot submit another subscription request while one is already pending.
+
+Once verified, your account type is updated and the `limit_time` is calculated based on the plan's `duration_days`.
+
+<Warning>
+  Do not submit a new subscription request if you already have one pending. The system will redirect you back to the dashboard if a pending subscription is detected on your account.
+</Warning>
+
+## Subscription history
+
+Every subscription you have ever purchased is stored and associated with your account. You can have multiple past subscription records — the platform tracks both:
+
+- **Latest pending subscription** — your most recent unverified purchase, if any.
+- **Latest verified subscription** — your most recent confirmed and active plan.
+
+This history is never deleted, so your billing record is always available for reference.
+
+## Subscription states at a glance
+
+<CardGroup cols={2}>
+  <Card title="Pending" icon="clock">
+    Your subscription request has been submitted and is awaiting payment verification by the Trabajonautas team. The `verified_payment` field is `false`.
+  </Card>
+  <Card title="Verified" icon="circle-check">
+    Your payment has been confirmed. Your account type is now active and your `limit_time` is set. The `verified_payment` field is `true`.
+  </Card>
+  <Card title="Expired" icon="calendar-xmark">
+    Your `limit_time` has passed. Your account has reverted to the free tier. Your subscription history remains intact.
+  </Card>
+  <Card title="Renewed" icon="rotate">
+    You have purchased a new plan after a previous one expired. A new subscription record is created and the cycle begins again.
+  </Card>
+</CardGroup>
+
+## Renewing or upgrading your plan
+
+You can purchase a new plan at any time from the **Plans** page, as long as you do not have an active pending subscription. If your current plan is close to expiring or has already expired, simply go through the purchase flow again to renew.
+
+<Tip>
+  Renew before your `limit_time` expires to avoid any gap in access to PRO features.
+</Tip>

@@ -1,0 +1,138 @@
+---
+title: "Posting job announcements"
+description: "How to create, publish, and manage job announcements (convocatorias) on Trabajonautas"
+---
+
+Announcements (convocatorias) are the job listings candidates see and apply to on Trabajonautas. Each announcement belongs to one of your companies and can target specific professions, locations, and professional areas.
+
+## Navigating to your announcements
+
+Go to **`/admin/convocatoria`** from the dashboard to see all announcements. The list is ordered by most recently updated, paginated at 8 per page, and includes the announcement title, expiration date, associated company, professional area, and PRO status. Use the search bar to filter by `announce_title`.
+
+## Creating a new announcement
+
+<Steps>
+  <Step title="Open the new announcement form">
+    Navigate to **`/admin/nueva-convocatoria`** or click the **Nueva Convocatoria** button from the announcements list.
+  </Step>
+
+  <Step title="Fill in the announcement details">
+    Complete all required fields. See the [field reference](#announcement-field-reference) below for full details on each field.
+
+    <Tip>
+      The `announce_title` field accepts up to 1,200 characters, which gives you room for a detailed, keyword-rich title that helps candidates find your listing through search.
+    </Tip>
+  </Step>
+
+  <Step title="Select professions and locations">
+    Announcements support **many-to-many** relationships for both professions (`profesions`) and locations (`locations`). You must select at least one of each. This ensures your announcement appears to candidates whose profiles match the roles and regions you need.
+
+    <Note>
+      Professions are grouped by professional area. The area you select for the announcement (`area_id`) is separate from the profession list — it categorizes the announcement at a higher level for browsing and suggestions.
+    </Note>
+  </Step>
+
+  <Step title="Attach supplementary files (optional)">
+    You can upload one or more files under **Archivos Adjuntos**. Candidates can download these from the announcement detail page.
+
+    Accepted file types: `jpg`, `jpeg`, `png`, `pdf`, `docx`, `xlsx`, `xlsm`, `xls`, `csv`
+    Maximum file size per file: **30 MB**
+
+    Files are stored in the `convocatorias/` directory and linked to your announcement via the `announceFiles` relationship.
+  </Step>
+
+  <Step title="Toggle PRO (optional)">
+    Enable the **PRO** toggle if you want Firebase push notifications sent to matching candidates when this announcement is published.
+
+    <Note>
+      PRO push notifications require an active paid subscription. See [the PRO announcements section](#pro-announcements-and-push-notifications) below for details on how targeting works.
+    </Note>
+  </Step>
+
+  <Step title="Save the announcement">
+    Click **Guardar** to publish the announcement. If PRO is enabled and notifications have not been sent yet, the system immediately dispatches a background job to deliver push notifications. You are redirected to `/admin/convocatoria` after saving.
+  </Step>
+</Steps>
+
+## Announcement field reference
+
+| Field | Type | Required | Description |
+|---|---|---|---|
+| `announce_title` | Text | Yes | The job title or announcement headline. Minimum 10 characters, maximum 1,200 characters. |
+| `description` | Long text | Yes | Full description of the role, requirements, and responsibilities. Supports rich text. |
+| `salary` | Decimal | Yes | Offered salary in bolivianos (BOB). Must be a positive number. Commas are stripped automatically. |
+| `expiration_time` | Date/time | Yes | The deadline for applications. Must be a future date — the system rejects past dates. |
+| `area_id` | Relation | Yes | The professional area that categorizes this announcement (e.g., Tecnología, Salud, Educación). |
+| `profesions` | Many-to-many | Yes | One or more professions this role targets. Candidates with matching professions in their profile are prioritized. |
+| `locations` | Many-to-many | Yes | One or more locations (cities/regions in Bolivia) where the position is available. |
+| `company_id` | Relation | Yes | The company under which this announcement is published. Must be one of your active companies. |
+| `pro` | Boolean | No | Enables PRO push notifications to matching candidates. Defaults to `false`. Requires a paid subscription. |
+| `announce_files` | File array | No | Supplementary files for candidates to download (e.g., terms of reference, application forms). |
+
+## PRO announcements and push notifications
+
+<Warning>
+  The PRO toggle is only effective if your account has an active paid PRO subscription. Enabling PRO without a subscription will not send notifications.
+</Warning>
+
+When you enable **PRO** and save an announcement, Trabajonautas dispatches a background job (`SendAnnouncementNotifications`) that sends Firebase push notifications to a targeted set of candidates. Notifications are only sent **once per announcement** — the `notification_sent` flag is set to `true` after the first successful dispatch, ensuring candidates are never notified twice for the same listing.
+
+### How PRO targeting works
+
+The notification job identifies candidates who meet **all three** of the following criteria:
+
+<CardGroup cols={3}>
+  <Card title="PRO-MAX account" icon="crown">
+    Only candidates with a PRO-MAX account tier receive push notifications.
+  </Card>
+  <Card title="Matching location" icon="location-dot">
+    The candidate's registered location matches one of the locations attached to your announcement.
+  </Card>
+  <Card title="Matching profession" icon="briefcase">
+    The candidate's listed profession matches one of the professions attached to your announcement.
+  </Card>
+</CardGroup>
+
+Notifications are sent in batches of up to 500 device tokens at a time. The job retries up to 3 times (with a 60-second backoff) before marking the dispatch as permanently failed.
+
+<Tip>
+  To maximize reach with a PRO announcement, select all relevant locations and professions for the role. Candidates who match any combination of the selected values will receive the notification.
+</Tip>
+
+## Editing an existing announcement
+
+Navigate to **`/admin/nueva-convocatoria/{id}`** to edit an existing announcement, where `{id}` is the announcement's numeric ID. You can also click the edit button from the announcement list.
+
+All fields are editable. If you enable PRO on an announcement that previously had it disabled — and notifications have not been sent yet — the system will dispatch a new notification job on save.
+
+### Managing attached files
+
+When editing, the current files attached to the announcement are displayed. You can:
+
+- **Delete individual files** by clicking the remove button next to each file. This permanently deletes the file from storage.
+- **Upload new files** using the file upload field. New files are added alongside any remaining existing files.
+
+<Note>
+  Deleting a file from the edit form is immediate and cannot be undone. The file is removed from both storage and the announcement record.
+</Note>
+
+## Data caching
+
+To keep the announcement form fast, several dropdown lists are cached for **24 hours**:
+
+| Cached data | Cache key |
+|---|---|
+| Professional areas | `areas_list` |
+| Locations | `locations_list` |
+| Companies | `companies_list` |
+| Professions | `profesions_list` |
+
+If a new area, location, company, or profession has been added by an administrator and does not appear in the form dropdowns, the cache may need to be refreshed. Contact your platform administrator if you notice missing options.
+
+## Deleting announcements
+
+Announcements can be deleted from the `/admin/convocatoria` list. Unlike companies, announcements are **not** soft-deleted — deletion is permanent. Ensure you no longer need an announcement before deleting it.
+
+<Warning>
+  Deleting an announcement removes it and all candidate applications (pivot data) linked to it. This action cannot be undone.
+</Warning>

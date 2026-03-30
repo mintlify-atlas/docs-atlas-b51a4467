@@ -1,0 +1,129 @@
+---
+title: "Authentication and security"
+description: "How to sign in, use Google OAuth, and protect your Trabajonautas account."
+---
+
+Trabajonautas supports two ways to sign in: email and password, or your Google account via OAuth. Both methods give you access to the same dashboard and features. A few security measures — including email verification, single-session enforcement, and optional two-factor authentication — help keep your account safe.
+
+## Signing in
+
+<Tabs>
+  <Tab title="Email and password">
+    ### Registering with email
+
+    <Steps>
+      <Step title="Create your account">
+        Go to the registration page and fill in your name, email address, and a password. You must accept the terms and conditions to proceed.
+      </Step>
+      <Step title="Verify your email">
+        After registering, Trabajonautas sends a verification email to the address you provided. Click the link in that email to confirm your address. You cannot access the dashboard until your email is verified.
+      </Step>
+      <Step title="Complete your profile">
+        Once verified, log in and finish setting up your profile — including your location, profession, and other details.
+      </Step>
+    </Steps>
+
+    ### Logging in with email
+
+    Go to the login page and enter your email and password. For privacy, the login form displays your email in an obfuscated format (e.g. `jua***@gmail.com`) once it is recognized — only the first three characters of the local part are shown.
+
+    ### Resetting your password
+
+    If you forget your password, use the password reset link on the login page. You'll receive a reset email with a secure link to set a new password.
+
+    <Note>
+      Password reset emails are sent from a custom Trabajonautas notification. Check your spam folder if you don't see the email within a few minutes.
+    </Note>
+  </Tab>
+  <Tab title="Google OAuth">
+    ### Signing in with Google
+
+    <Steps>
+      <Step title="Click 'Sign in with Google'">
+        On the login page, click the Google sign-in button to initiate the OAuth flow.
+      </Step>
+      <Step title="Authorize with your Google account">
+        Select your Google account and grant Trabajonautas permission to access your name and email address.
+      </Step>
+      <Step title="Account created or linked automatically">
+        If no Trabajonautas account exists for your Google email, a new account is created automatically with your Google name and email. Your email is marked as verified immediately — no separate email confirmation step is required.
+      </Step>
+      <Step title="You're signed in">
+        You are logged in and redirected to your dashboard.
+      </Step>
+    </Steps>
+
+    <Tip>
+      If you previously registered with the same email address using a password, signing in with Google will log you into that existing account. Your accounts are matched by email address.
+    </Tip>
+  </Tab>
+</Tabs>
+
+## Email verification
+
+Trabajonautas requires that your email address be verified before you can access the authenticated areas of the platform. This applies to email/password registrations. Google OAuth sign-ins are automatically verified.
+
+If your email is not verified, you will be blocked from accessing your dashboard and other protected routes until you click the verification link sent to your inbox.
+
+## Single-session enforcement
+
+Trabajonautas enforces **one active session per account**. When you log in on a new device or browser, all your other active sessions are terminated automatically.
+
+This means:
+
+- If you are logged in on your phone and then log in on a laptop, your phone session ends.
+- If someone else logs into your account, your current session will be invalidated.
+
+<Warning>
+  If you are unexpectedly logged out, it may mean that someone else has signed into your account. Change your password immediately and enable two-factor authentication.
+</Warning>
+
+## Two-factor authentication (2FA)
+
+Trabajonautas supports two-factor authentication via a time-based authenticator app (TOTP). When enabled, you must enter a 6-digit code from your authenticator app each time you log in.
+
+<Steps>
+  <Step title="Go to your profile settings">
+    Open your account settings from the dashboard.
+  </Step>
+  <Step title="Enable two-factor authentication">
+    Find the two-factor authentication section and click **Enable**. A QR code will be displayed.
+  </Step>
+  <Step title="Scan the QR code">
+    Open your authenticator app (such as Google Authenticator or Authy) and scan the QR code to add Trabajonautas.
+  </Step>
+  <Step title="Save your recovery codes">
+    You will be shown a set of one-time recovery codes. Store these in a safe place. They are the only way to regain access if you lose your authenticator device.
+  </Step>
+  <Step title="Confirm and activate">
+    Enter a code from your authenticator app to confirm setup. 2FA is now active on your account.
+  </Step>
+</Steps>
+
+<Tip>
+  Enabling 2FA is strongly recommended, especially if you use the platform to manage job postings or company information. It adds a second layer of protection beyond your password.
+</Tip>
+
+## Account activation and deactivation
+
+Every Trabajonautas account has an `actived` status. Accounts that are deactivated by an administrator cannot log in and are shown a deactivation notice. If you believe your account has been deactivated in error, contact Trabajonautas support.
+
+## Security tips
+
+<AccordionGroup>
+  <Accordion title="Use a strong, unique password">
+    Choose a password that you don't use on any other site. A mix of letters, numbers, and symbols makes your account significantly harder to compromise.
+  </Accordion>
+  <Accordion title="Enable two-factor authentication">
+    2FA is the single most effective step you can take to protect your account. Even if your password is exposed, 2FA prevents unauthorized access.
+  </Accordion>
+  <Accordion title="Understand single-session behavior">
+    Because Trabajonautas allows only one active session at a time, always log out from shared or public devices. Being logged out unexpectedly is a signal that your credentials may have been used elsewhere.
+  </Accordion>
+  <Accordion title="Keep your recovery codes safe">
+    If you enable 2FA, your recovery codes are the only way back in if you lose access to your authenticator app. Store them offline in a secure location.
+  </Accordion>
+  <Accordion title="Use Google Sign-In for a passwordless option">
+    Signing in with Google removes the risk of a weak or reused password. Google OAuth sessions still follow Trabajonautas's single-session enforcement rules.
+  </Accordion>
+</AccordionGroup>

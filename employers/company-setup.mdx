@@ -1,0 +1,80 @@
+---
+title: "Setting up your company"
+description: "How employers create and manage company profiles on Trabajonautas"
+---
+
+Every job announcement on Trabajonautas is published under a company profile. Before you can post any convocatorias, you need at least one company set up and linked to your account.
+
+## Navigating to your companies
+
+Go to **`/admin/empresa`** from the dashboard to see all companies associated with your account. The list is sorted alphabetically by company name and is paginated with 8 results per page. Use the search bar to filter by `company_name`.
+
+<Note>
+  Companies are linked directly to your user account. Each company you create is owned by you and only your account can publish announcements under it.
+</Note>
+
+## Creating a new company
+
+<Steps>
+  <Step title="Open the new company form">
+    Navigate to **`/admin/nueva-empresa`** or click the **Nueva Empresa** button from the company list. This opens the company creation form.
+  </Step>
+
+  <Step title="Fill in the company details">
+    Complete the following required fields:
+
+    | Field | Description |
+    |---|---|
+    | `company_name` | The official name of your company. Must be unique across the platform — no two companies can share the same name. Minimum 2 characters. |
+    | `description` | A text description of your company, its mission, or what it does. Shown to candidates on announcement pages. |
+    | `company_image` | Your company logo. Accepted formats: JPG, JPEG, PNG, WEBP. Maximum file size: 4 MB. |
+    | `company_type_id` | The type of company (e.g., private, public, NGO). Select from the available categories in the dropdown. |
+
+    <Tip>
+      Use a high-quality square logo for `company_image`. It appears as a thumbnail next to every announcement your company publishes, so a clear image makes your listings stand out to candidates.
+    </Tip>
+  </Step>
+
+  <Step title="Save the company">
+    Click **Guardar** to create the company. You are redirected back to `/admin/empresa` after saving. Your new company is immediately available to select when creating announcements.
+  </Step>
+</Steps>
+
+## Editing an existing company
+
+To update a company's details, navigate to **`/admin/nueva-empresa/{company}`**, where `{company}` is the company's ID. You can also click the edit button directly from the company list at `/admin/empresa`.
+
+All fields are editable including the logo. If you leave the logo field unchanged when editing, the existing image is kept. The `company_name` uniqueness rule still applies on edits — you cannot rename a company to a name already in use by another company.
+
+<Note>
+  Saving an edited company clears the cached company list used by the announcement form. Any changes to your company name will appear immediately when creating new announcements.
+</Note>
+
+## Managing multiple companies
+
+You can create and manage as many companies as your account needs. All companies owned by your account appear in the `/admin/empresa` list regardless of their current status. This makes it straightforward to manage a portfolio of brands or client companies from a single account.
+
+<Tip>
+  Use the search field on the company list to quickly find a specific company by name when managing a large number of profiles.
+</Tip>
+
+## Soft-delete and restore
+
+Deleting a company from the list performs a **soft delete** — the company record is not permanently removed from the database. Soft-deleted companies remain visible in the `/admin/empresa` list with a visual indicator so you can distinguish them from active companies.
+
+<CardGroup cols={2}>
+  <Card title="Delete a company" icon="trash">
+    Removes the company from active use. Soft-deleted companies cannot be selected when creating new announcements.
+  </Card>
+  <Card title="Restore a company" icon="rotate-left">
+    Restores a previously deleted company back to active status. Use the restore button next to the company in the list.
+  </Card>
+</CardGroup>
+
+<Warning>
+  Soft-deleting a company does not delete its announcements. Existing announcements linked to the company remain in the system. However, a deleted company will no longer appear in the company selector when creating new convocatorias.
+</Warning>
+
+## Company types
+
+When creating a company you must select a **company type** (`company_type_id`). Company types are predefined categories managed by administrators (e.g., Empresa Privada, Institución Pública, ONG). If you do not see an appropriate type for your organization, contact the platform administrator.

@@ -1,0 +1,98 @@
+---
+title: "Applying to jobs"
+description: "How to open a full announcement, apply to save and track it, and monitor your applications from the dashboard."
+---
+
+When you find an announcement you are interested in, you can open its full detail page, save it to your profile, and track it from your personal dashboard. Applying links your user account to the announcement via the `usersOf` relationship — the employer can then see you as an applicant.
+
+<Note>
+  You must be logged in and have a completed profile (`register_completed = true`) to apply to any announcement. If you click apply while logged out, you are redirected to the registration page.
+</Note>
+
+## Applying step by step
+
+<Steps>
+  <Step title="Find an announcement">
+    Search for jobs at `/busqueda` or browse your personalised dashboard at `/panel`. When you see a role you want to apply to, click the announcement title or card to open the full detail page.
+  </Step>
+
+  <Step title="Read the full announcement">
+    Each announcement detail page is available at:
+
+    ```
+    /convocatoria/{id}
+    ```
+
+    Here you can read the complete job description including:
+
+    - **Title** (`announce_title`) and the hiring company
+    - **Description** — full requirements and responsibilities
+    - **Salary** information if the employer has included it
+    - **Expiration date** (`expiration_time`) — the deadline to apply
+    - **Target professions** — the roles the employer is looking for
+    - **Locations** — the city or cities where the role is based
+    - **Attached files** (`announceFiles`) — employers often attach PDF requirements, terms of reference, or application forms you need to complete
+
+    <Tip>
+      Download and read all attached files before applying. They often contain specific instructions, required documents, or application deadlines that are not in the main description.
+    </Tip>
+  </Step>
+
+  <Step title="Save the announcement">
+    Click the **save** button on the announcement page. This does two things:
+
+    1. Attaches the announcement to your account via the `myAnnounces` pivot relationship
+    2. Adds you to the announcement's `usersOf` list, making you visible as an applicant to the employer
+
+    You can remove a saved announcement at any time by clicking the same button again (it toggles to **unsave**).
+
+    <Warning>
+      Saving an announcement is how you register your interest. There is no separate "Apply" button — saving is the application action on Trabajonautas.
+    </Warning>
+  </Step>
+
+  <Step title="Track your applications from the dashboard">
+    Go to `/panel` to see all the announcements you have saved and applied to. Your dashboard shows:
+
+    - Your saved announcements via `myAnnounces`
+    - New announcements matched to your `profesion_id` and `location_id` since your last visit
+    - A notification indicator when fresh announcements have been posted that match your profile
+
+    The dashboard reads your `last_announce_check` timestamp to determine whether new matches exist. When you open the dashboard, this timestamp is updated so the badge resets.
+  </Step>
+</Steps>
+
+## Suggested announcements
+
+When you view a full announcement at `/convocatoria/{id}`, the page also shows up to **6 suggested announcements** from the same **area** (`area_id`). These are other active, non-expired announcements in the same broad professional field — a quick way to discover related roles without going back to search.
+
+## What makes a strong application
+
+Because employers see your profile when you apply, the completeness of your profile is your application. There is no cover letter or separate form — your Trabajonautas profile is what employers evaluate.
+
+<CardGroup cols={2}>
+  <Card title="Complete every profile field" icon="circle-check">
+    Make sure your `profesion_id`, `grade_profile_id`, `location_id`, gender, age range, and phone number are all filled in. Incomplete profiles appear less credible to employers.
+  </Card>
+  <Card title="Add a profile photo" icon="camera">
+    Upload a clear, professional profile photo. Profiles with photos are more likely to be contacted after an application.
+  </Card>
+  <Card title="Match your profession to the role" icon="bullseye">
+    Only apply to announcements where your selected `profesion_id` matches what the employer is looking for. Mismatched applications are less likely to result in contact.
+  </Card>
+  <Card title="Apply before the deadline" icon="clock">
+    Each announcement has an `expiration_time`. Once that date passes, the announcement closes and you can no longer apply. Check the expiration date before saving.
+  </Card>
+</CardGroup>
+
+## Pro-only announcements
+
+Some announcements carry the **PRO** flag (`pro = true`). These are only accessible if you have an active, verified Pro or Pro Max subscription. Additionally, your `profesion_id` must be listed as one of the target professions for that announcement — if it is not, you will be redirected to a restricted-area page even with a Pro subscription.
+
+<Tip>
+  If you see a PRO badge on an announcement in search results but cannot open it, visit `/pro` to compare subscription plans and unlock access.
+</Tip>
+
+## Removing a saved announcement
+
+If you change your mind after applying, open the announcement at `/convocatoria/{id}` and click the unsave button. This detaches the announcement from your `myAnnounces` list. The employer will no longer see you as an applicant for that role.

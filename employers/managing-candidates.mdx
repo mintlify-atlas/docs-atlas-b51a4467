@@ -1,0 +1,109 @@
+---
+title: "Managing candidates"
+description: "How employers review applicants and manage their candidate pipeline on Trabajonautas"
+---
+
+When candidates apply to one of your announcements, they are recorded in the system via the `announcement_user` pivot table. Trabajonautas gives you tools to browse your applicant pool, view individual candidate profiles, and understand how complete and relevant each profile is.
+
+## Viewing candidates on an announcement
+
+Each announcement tracks which candidates have applied through the `usersOf` relationship (backed by the `announcement_user` pivot table). From your announcement list at `/admin/convocatoria`, you can see the total number of applicants per listing and drill into the candidate profiles.
+
+## Reviewing the full candidate list
+
+<Steps>
+  <Step title="Navigate to the client list">
+    Go to **`/admin/cliente`** from the dashboard. This shows all registered candidates (users with the CLIENT role) across the platform, paginated at 10 per page and ordered by most recently updated.
+  </Step>
+
+  <Step title="Filter candidates">
+    Use the filter options at the top of the list to narrow down candidates by status:
+
+    | Filter | What it shows |
+    |---|---|
+    | *(default)* | All active candidates with `register_completed = true` |
+    | `active` | Candidates with an active account (`actived = true`) |
+    | `inactive` | Candidates whose account is currently deactivated |
+    | `pending` | Candidates with a pending subscription payment |
+    | `unaccount` | Candidates who started registration but have not completed it (`register_completed = false`) |
+    | `deleted` | Soft-deleted (deregistered) candidate accounts |
+
+    <Tip>
+      Use the `active` filter first when reviewing candidates for a role. Active accounts with completed profiles represent candidates who are actively looking for work on the platform.
+    </Tip>
+  </Step>
+
+  <Step title="Search by name">
+    Use the search field to find a specific candidate by name. The search performs a partial match on the candidate's `name` field and resets pagination automatically.
+  </Step>
+
+  <Step title="Open a candidate profile">
+    Click on a candidate from the list to navigate to their full profile at **`/admin/config-cliente/{id}`**.
+  </Step>
+</Steps>
+
+## Reading a candidate profile
+
+The candidate profile page at `/admin/config-cliente/{id}` gives you a complete view of what the candidate has submitted. Here is what to look for when evaluating an applicant:
+
+<AccordionGroup>
+  <Accordion title="Registration completeness">
+    The `register_completed` flag tells you whether a candidate has finished setting up their profile. Candidates with `register_completed = false` have started an account but have not provided the information needed to be considered a complete applicant.
+
+    <Warning>
+      Candidates who have not completed registration (`register_completed = false`) do not have full profile data on record. Treat these applications as incomplete until the candidate finishes setting up their account.
+    </Warning>
+  </Accordion>
+
+  <Accordion title="Location">
+    The candidate's registered location (`location_name`) tells you where they are based. Cross-reference this with the locations you listed on your announcement to confirm geographic relevance.
+  </Accordion>
+
+  <Accordion title="Account type and subscription">
+    Each candidate profile shows their account type and subscription status. Candidates with a **PRO-MAX** account have invested in the platform and are more likely to be actively seeking work. The `latestPendingSubscription` field shows if the candidate has a subscription payment awaiting confirmation.
+  </Accordion>
+
+  <Accordion title="Account activation status">
+    The `actived` field shows whether the candidate's account is currently enabled. An inactive account (`actived = false`) may indicate the account has been suspended or the candidate has been flagged by the platform.
+  </Accordion>
+</AccordionGroup>
+
+## What to look for in candidate profiles
+
+<CardGroup cols={2}>
+  <Card title="Completed profile" icon="circle-check">
+    Prioritize candidates where `register_completed = true`. These candidates have provided their full information — profession, location, and personal details — making them easier to evaluate.
+  </Card>
+  <Card title="Matching profession" icon="id-card">
+    Check that the candidate's listed profession aligns with the professions you specified on the announcement. PRO announcements already pre-filter for this match, but manual review helps confirm fit.
+  </Card>
+  <Card title="Location alignment" icon="map-pin">
+    Verify the candidate's `location` matches the work location(s) in your announcement, especially for in-person or region-specific roles.
+  </Card>
+  <Card title="Active account" icon="user-check">
+    Favor candidates with `actived = true` and no pending account issues. Active accounts are in good standing with the platform.
+  </Card>
+</CardGroup>
+
+## Understanding the candidate pipeline
+
+Candidates appear in your pipeline as soon as they submit an application against one of your announcements. The pipeline is a flat list — Trabajonautas does not currently support custom pipeline stages (e.g., shortlisted, interviewed, rejected) within the platform itself. Use the candidate profile data to inform your external hiring process.
+
+<Tip>
+  Keep track of candidates externally (e.g., in a spreadsheet or ATS) by noting their profile URL (`/admin/config-cliente/{id}`) and the announcement they applied to. This lets you maintain a structured pipeline even as you review applicants across multiple convocatorias.
+</Tip>
+
+## Monitoring candidate account status
+
+The client list at `/admin/cliente` surfaces key status signals that help you understand the quality of your applicant pool:
+
+| Signal | Field | What it means |
+|---|---|---|
+| Profile complete | `register_completed = true` | Candidate has finished onboarding |
+| Account active | `actived = true` | Account is enabled and in good standing |
+| Soft deleted | `deleted_at` is set | Account has been deregistered; shown under the `deleted` filter |
+| Pending subscription | `latestPendingSubscription` present | Candidate has submitted a subscription request awaiting approval |
+
+<Note>
+  Soft-deleted candidate accounts are not permanently removed from the system. They remain visible under the `deleted` filter, so you retain access to their application history even after deregistration.
+</Note>

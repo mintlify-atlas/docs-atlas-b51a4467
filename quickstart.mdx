@@ -1,80 +1,78 @@
 ---
 title: "Quickstart"
-description: "Start building awesome documentation in minutes"
+description: "Get started with Trabajonautas in just a few steps."
 ---
 
-## Get started in three steps
+This guide walks you through creating an account and completing your first action on Trabajonautas — whether you are looking for work or posting a job.
 
-Get your documentation site running locally and make your first customization.
+## Choose your path
 
-### Step 1: Set up your local environment
+<Tabs>
+  <Tab title="Job Seeker">
+    <Steps>
+      <Step title="Create your account">
+        Go to the Trabajonautas homepage and click **Register**. You can sign up with your email address or use **Continue with Google** for a faster registration.
 
-<AccordionGroup>
-  <Accordion icon="copy" title="Clone your docs locally">
-    During the onboarding process, you created a GitHub repository with your docs content if you didn't already have one. You can find a link to this repository in your [dashboard](https://dashboard.mintlify.com).
-    
-    To clone the repository locally so that you can make and preview changes to your docs, follow the [Cloning a repository](https://docs.github.com/en/repositories/creating-and-managing-repositories/cloning-a-repository) guide in the GitHub docs.
-  </Accordion>
-  <Accordion icon="rectangle-terminal" title="Start the preview server">
-    1. Install the Mintlify CLI: `npm i -g mint`
-    2. Navigate to your docs directory and run: `mint dev`
-    3. Open `http://localhost:3000` to see your docs live!
-    
-    <Tip>Your preview updates automatically as you edit files.</Tip>
-  </Accordion>
-</AccordionGroup>
+        After registering with email, check your inbox for a verification link and click it to activate your account.
+      </Step>
+      <Step title="Complete your profile">
+        Once logged in, you will be prompted to complete your profile. Fill in:
+        - **Full name** and **gender**
+        - **Age**
+        - **Phone number** (Bolivian format, country code +591 is added automatically)
+        - **Location** — select your city or department in Bolivia
+        - **Profession** — choose your field from the available list
+        - **Education level** — select your grade profile
 
-### Step 2: Deploy your changes
+        A complete profile increases your visibility to employers.
+      </Step>
+      <Step title="Browse and search jobs">
+        From the homepage, you can see recent job announcements. Use the search bar at `/busqueda` to search by job title. Filter results by area, profession, or location to narrow your results.
+      </Step>
+      <Step title="Apply to an announcement">
+        Open any announcement to see the full details including title, description, salary, expiration date, and attached files. Click **Apply** to register your interest. You can track all announcements you have applied to from your dashboard at `/panel`.
+      </Step>
+    </Steps>
+  </Tab>
+  <Tab title="Employer">
+    <Steps>
+      <Step title="Create your account">
+        Register on Trabajonautas using your business email or Google account. After email verification, your account will have the **USER** role, giving you access to employer features.
+      </Step>
+      <Step title="Set up your company">
+        Navigate to **Admin → Companies** and click **New Company**. Enter your company name, type, and other details. You can manage multiple companies from a single account.
+      </Step>
+      <Step title="Post your first announcement">
+        Go to **Admin → Announcements** and click **New Announcement**. Fill in:
+        - Job title and description
+        - Salary
+        - Area and required professions
+        - Location(s)
+        - Expiration date
+        - Attach any relevant files (requirements, job description PDFs, etc.)
 
-<AccordionGroup>
-  <Accordion icon="github" title="Install our GitHub app">
-    Install the Mintlify GitHub app from your [dashboard](https://dashboard.mintlify.com/settings/organization/github-app).
-    
-    Our GitHub app automatically deploys your changes to your docs site, so you don't need to manage deployments yourself.
-</Accordion>
-<Accordion icon="palette" title="Update your site name and colors">
-    For a first change, let's update the name and colors of your docs site.
-
-    1. Open `docs.json` in your editor.
-    2. Change the `"name"` field to your project name.
-    3. Update the `"colors"` to match your brand.
-    4. Save and see your changes instantly at `http://localhost:3000`.
-
-    <Tip>Try changing the primary color to see an immediate difference!</Tip>
-  </Accordion>
-</AccordionGroup>
-
-### Step 3: Go live
-
-<Accordion icon="rocket" title="Publish your docs">
-  1. Commit and push your changes.
-  2. Your docs will update and be live in moments!
-</Accordion>
+        Toggle **PRO** on if you want to send push notifications to matching job seekers (requires a paid subscription).
+      </Step>
+      <Step title="Manage candidates">
+        From the announcements list, view who has applied to each posting. Use the client management section to review applicant profiles and update your pipeline.
+      </Step>
+    </Steps>
+  </Tab>
+</Tabs>
 
 ## Next steps
 
-Now that you have your docs running, explore these key features:
-
 <CardGroup cols={2}>
-
-<Card title="Write Content" icon="pen-to-square" href="/essentials/markdown">
-  Learn MDX syntax and start writing your documentation.
-</Card>
-
-<Card title="Customize style" icon="palette" href="/essentials/settings">
-  Make your docs match your brand perfectly.
-</Card>
-
-<Card title="Add code examples" icon="square-code" href="/essentials/code">
-  Include syntax-highlighted code blocks.
-</Card>
-
-<Card title="API documentation" icon="code" href="/api-reference/introduction">
-  Auto-generate API docs from OpenAPI specs.
-</Card>
-
+  <Card title="Profile setup" icon="id-card" href="/job-seekers/creating-profile">
+    Detailed guidance on building a complete job seeker profile.
+  </Card>
+  <Card title="Posting announcements" icon="bullhorn" href="/employers/posting-announcements">
+    Learn all the options available when creating a job announcement.
+  </Card>
+  <Card title="Account plans" icon="star" href="/account/account-types">
+    Explore free and paid plans and what each includes.
+  </Card>
+  <Card title="Authentication" icon="lock" href="/account/authentication">
+    Learn about login options including Google OAuth and two-factor authentication.
+  </Card>
 </CardGroup>
-
-<Note>
-  **Need help?** See our [full documentation](https://mintlify.com/docs) or join our [community](https://mintlify.com/community).
-</Note>

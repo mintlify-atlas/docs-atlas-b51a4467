@@ -1,0 +1,136 @@
+---
+title: "Areas and professions"
+description: "How administrators manage job categories (areas), profession classifications, and platform-wide notices."
+---
+
+Areas and professions form the taxonomy that powers job-seeker matching on Trabajonautas. Every job announcement is tagged with one or more professions, and every profession belongs to an area. When a client selects their profession during onboarding, they automatically see announcements relevant to that profession.
+
+## How the taxonomy works
+
+```
+Area (top-level category)
+└── Profession 1
+└── Profession 2
+└── Profession 3
+```
+
+An **Area** (e.g. "Tecnología", "Salud") groups related **Professions** (e.g. "Desarrollador Web", "Enfermero"). Job announcements are linked to professions via a many-to-many relationship, and clients match announcements through their `profesion_id`.
+
+<Note>
+  The dropdown lists used in the announcement form (areas, locations, companies, professions) are cached for up to **24 hours**. After you save or delete an **area**, the `areas_list` cache is cleared immediately and the new area appears in announcement forms right away. Similarly, saving a **company** clears the `companies_list` cache. However, saving a **profession** does not clear the `profesions_list` cache. If a newly added profession does not appear in the announcement form dropdowns, wait up to 24 hours for the cache to expire naturally.
+</Note>
+
+---
+
+## Managing areas — `/admin/area`
+
+The areas list at `/admin/area` is accessible to **ADMIN only**. Each area record has the following fields:
+
+| Field | Description |
+|---|---|
+| `area_name` | The display name of the job category |
+| `description` | Optional description of the area |
+| `user_id` | The admin user who created or last updated the area |
+
+Areas are listed ordered by most recently updated. From this page you can **edit** or **delete** any area.
+
+<Warning>
+  Deleting an area also removes the link between that area and its professions. Any profession that relied on the deleted area will lose its `area_id` reference. Review which professions belong to an area before deleting it.
+</Warning>
+
+### Adding a new area
+
+<Steps>
+  <Step title="Navigate to the areas page">
+    Go to `/admin/area`. You will see all existing areas listed in order of last update.
+  </Step>
+  <Step title="Open the area form">
+    Click the **New area** button. The `FormArea` component opens inline on the same page.
+  </Step>
+  <Step title="Enter the area name and description">
+    Fill in the `area_name` field (required) and an optional `description`. These are shown to employers when categorising their announcements.
+  </Step>
+  <Step title="Save">
+    Click **Save**. The system stores the new area, sets `user_id` to your account ID, and invalidates the `areas_list` cache so the new area is immediately available in announcement forms.
+  </Step>
+</Steps>
+
+### Editing an area
+
+Click **Edit** on any area row. The `FormArea` component loads the area data via the `load-area` event and pre-populates the form. Make your changes and click **Save** — the cache is invalidated again on every save.
+
+---
+
+## Managing professions — `/admin/profesiones`
+
+The professions page at `/admin/profesiones` is accessible to **USER and ADMIN** roles. Each profession record links to a parent area:
+
+| Field | Description |
+|---|---|
+| `profesion_name` | The display name of the profession |
+| `area_id` | Foreign key linking this profession to its parent area |
+
+Professions are listed 8 per page, ordered by most recently updated. Use the search field to filter by `profesion_name` (case-insensitive, partial match).
+
+### Adding professions under a new area
+
+<Steps>
+  <Step title="Create the area first">
+    Before adding professions, make sure the parent area exists. Go to `/admin/area` and create the area if it does not already exist (see steps above). Note its name.
+  </Step>
+  <Step title="Navigate to professions">
+    Go to `/admin/profesiones`.
+  </Step>
+  <Step title="Open the profession form">
+    Click **New profession**. The `FormProfesion` component appears.
+  </Step>
+  <Step title="Fill in the profession name">
+    Enter the `profesion_name`. This is what clients see when setting up their profile and what employers see when tagging announcements.
+  </Step>
+  <Step title="Select the parent area">
+    Choose the correct area from the `area_id` dropdown. The list is populated from existing areas.
+  </Step>
+  <Step title="Save">
+    Click **Save**. The new profession appears immediately in the list and becomes available for client profile selection and announcement tagging.
+  </Step>
+  <Step title="Repeat for additional professions">
+    Repeat the previous three steps for each profession that belongs to this area.
+  </Step>
+</Steps>
+
+### Editing and deleting professions
+
+Click **Edit** on any profession row — the form loads the record via the `load-profesion` event. Click **Delete** to permanently remove a profession. 
+
+<Warning>
+  Deleting a profession affects all clients who have that `profesion_id` set on their profile — they will no longer match any announcements. It also removes the profession tag from any announcements it was linked to. Reassign clients and announcements to another profession before deleting.
+</Warning>
+
+---
+
+## Notices — `/admin/noticias`
+
+The notices section at `/admin/noticias` is accessible to **ADMIN only**. Notices are platform-wide announcements or news items visible to users across the platform. Each notice can include a cover image (stored at `noticias/` on the public disk); if no image is uploaded, a default image (`noticias/default.webp`) is used automatically.
+
+Notices are listed 6 per page, ordered by most recently updated.
+
+### Managing notices
+
+<Steps>
+  <Step title="Navigate to notices">
+    Go to `/admin/noticias`.
+  </Step>
+  <Step title="Create a new notice">
+    Click the **New notice** button and fill in the notice content. Optionally upload a cover image.
+  </Step>
+  <Step title="Publish">
+    Save the notice. It becomes visible to users immediately.
+  </Step>
+  <Step title="Delete a notice">
+    Click **Delete** on any notice row. The record is removed from the database and, if the notice had a custom image (not the default), the image file is also deleted from storage.
+  </Step>
+</Steps>
+
+<Tip>
+  Use notices to communicate subscription price changes, platform downtime, or new features. Notices are one of the most direct ways to reach all users simultaneously.
+</Tip>
